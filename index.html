@@ -1,114 +1,107 @@
 <!DOCTYPE html>
-<html lang="zh-Hant-TW" class="w-full m-0 p-0">
+<html lang="zh-Hant-TW">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>校務應用系統</title>
+  <title>我的網路書房</title>
   <style>
-    /* 確保頁面流暢自然隨高度延展 */
-    html, body {
+    /* ===== 基礎重設與滿版設定 ===== */
+    * {
+      box-sizing: border-box;
       margin: 0;
       padding: 0;
-      width: 100%;
-      min-height: 100%;
-      background-color: #ffffff;
-      overflow-x: hidden;
     }
 
-    /* WCAG 2.4.1: 鍵盤快速跳過鏈結 (僅在 Tab 獲取焦點時顯示) */
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden; /* 避免父頁面出現重複捲軸 */
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background-color: #ffffff;
+    }
+
+    /* ===== 無障礙：跳至主內容區連結 (WCAG 2.4.1 & 2.4.7) ===== */
     .skip-link {
       position: absolute;
-      top: -60px;
-      left: 16px;
-      background: #0f172a;
+      top: -100px;
+      left: 10px;
+      background-color: #005fcc; /* 文字對比度 4.5:1 以上 */
       color: #ffffff;
-      padding: 10px 18px;
-      font-weight: 700;
-      font-size: 0.875rem;
-      border-radius: 0 0 8px 8px;
-      z-index: 99999;
+      padding: 12px 20px;
+      z-index: 9999;
+      font-size: 1rem;
+      font-weight: bold;
       text-decoration: none;
-      transition: top 0.2s ease-in-out;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      border-radius: 4px;
+      transition: top 0.2s ease;
     }
+
     .skip-link:focus {
-      top: 0;
-      outline: 3px solid #2563eb;
+      top: 10px;
+      outline: 3px solid #ffbf47; /* 高對比焦點視覺 */
       outline-offset: 2px;
     }
 
-    /* 滿版無邊框、自適應高度 iframe 樣式 */
-    .fullscreen-frame {
-      width: 100%;
-      /* 預設為全視窗高度，收到內部高度訊息時會透過 JavaScript 動態變更為實際像素高度 */
+    /* ===== 主內容區域容器 ===== */
+    main {
+      width: 100vw;
       height: 100vh;
-      min-height: 100vh;
-      border: 0;
-      display: block;
-      margin: 0;
-      padding: 0;
-      transition: height 0.15s ease-out;
+      height: 100dvh; /* 支援現代行動裝置動態視埠 */
+      display: flex;
+      flex-direction: column;
     }
 
-    /* WCAG 2.4.7: 焦點顯著性規範 */
-    iframe:focus-visible {
-      outline: 2px solid #2563eb;
+    /* 無障礙隱藏標題 (WCAG 1.3.1) */
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    /* ===== Iframe 滿版無邊框樣式 ===== */
+    .app-iframe {
+      width: 100%;
+      height: 100%;
+      border: 0;
+      display: block;
     }
   </style>
 </head>
-<body class="w-full m-0 p-0">
-  <!-- 鍵盤無障礙快速跳入 iframe -->
-  <a href="#main-app-frame" class="skip-link">跳至嵌入應用系統 (Skip to Embedded App)</a>
+<body>
 
-  <main role="main" class="w-full m-0 p-0">
-    <iframe
-      id="main-app-frame"
-      src="https://script.google.com/macros/s/AKfycbzFtkI7eG-5VAzt4wtFjmcBN3xk9Lr409VmyLc5e0pCuKlMBqJDMK2So_Cqn3iaglLQ/exec/exec"
-      title="校務應用系統"
-      class="fullscreen-frame"
-      scrolling="auto"
-      sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-modals allow-downloads allow-top-navigation-by-user-activation"
-      allow="accelerometer; camera; encrypted-media; geolocation; gyroscope; microphone; midi; clipboard-read; clipboard-write;"
-    >
-      <p>您的環境不支援 iframe 框架展示，請<a href="https://script.google.com/macros/s/AKfycbzFtkI7eG-5VAzt4wtFjmcBN3xk9Lr409VmyLc5e0pCuKlMBqJDMK2So_Cqn3iaglLQ/exec/exec" target="_blank" rel="noopener noreferrer">點此開啟</a>。</p>
+  <!-- 無障礙快速跳轉連結 (WCAG 2.4.1) -->
+  <a href="#main-content" class="skip-link">跳至主要內容區</a>
+
+  <!-- 主要內容區語意化標籤 (WCAG 1.3.1) -->
+  <main id="main-content" tabindex="-1">
+    <h1 class="sr-only">嵌入式應用程式內容系統</h1>
+    <iframe 
+      id="app-frame"
+      class="app-iframe"
+      src="https://script.google.com/macros/s/AKfycbzXOyGUG3GyZNjabS8DSrobczj2DeVeKhIlaguJ-YRRuTn_LrYz2lTAZiTjpARtxMaZ/exec"
+      title="我的網路書房" 
+      allow="geolocation; microphone; camera; midi; encrypted-media;"
+      sandbox="allow-forms allow-modals allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation">
     </iframe>
   </main>
 
   <script>
-    (function () {
-      const frame = document.getElementById('main-app-frame');
-
-      // 監聽來自嵌入子網頁傳來的高度通知訊息 (postMessage)
-      window.addEventListener('message', function (event) {
-        if (!event || !event.data) return;
-
-        let detectedHeight = null;
-
-        // 支援多種常見 postMessage 格式 (數值、物件、JSON 字串)
-        if (typeof event.data === 'number') {
-          detectedHeight = event.data;
-        } else if (typeof event.data === 'object') {
-          if (event.data.frameHeight || event.data.height) {
-            detectedHeight = event.data.frameHeight || event.data.height;
-          }
-        } else if (typeof event.data === 'string') {
-          try {
-            const parsed = JSON.parse(event.data);
-            if (parsed && (parsed.frameHeight || parsed.height)) {
-              detectedHeight = parsed.frameHeight || parsed.height;
-            }
-          } catch (e) {
-            // 忽略非 JSON 字串
-          }
+    // 跨網域高度動態接收監聽 (針對 postMessage 溝通方案)
+    window.addEventListener('message', function(event) {
+      // 接收內嵌頁面傳送的高度變更訊息
+      if (event.data && event.data.type === 'resize' && event.data.height) {
+        const iframe = document.getElementById('app-frame');
+        if (iframe) {
+          iframe.style.height = event.data.height + 'px';
         }
-
-        // 動態將 iframe 高度設定為子頁面回報的實際內容高度
-        if (detectedHeight && !isNaN(detectedHeight) && detectedHeight > 50) {
-          frame.style.height = detectedHeight + 'px';
-          frame.style.minHeight = detectedHeight + 'px';
-        }
-      });
-    })();
+      }
+    });
   </script>
 </body>
 </html>
